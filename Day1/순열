@@ -1,1 +1,78 @@
 
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+ll n, k, mod = 1e9 + 9;
+ll arr[5010], chk1[5010], chk2[5010], chk3[5010];
+
+ll nPr(ll x, ll y){
+    ll facto = 1;
+    for(ll i = x; i >= x-y+1; i--) facto *= i, facto %= mod;
+    return facto % mod;
+}
+
+int main(){
+    cin >> n >> k;
+    for(ll i = 1; i <= k; i++){
+        cin >> arr[i];
+    }
+    //사전순 몇번째인지 구하기
+    ll cur = 1, ans = 1;
+    for(ll i = 1; i <= k; i++){
+        chk1[arr[i]] = 1;
+        ll cnt = 0;
+        for(ll j = 1; j <= arr[i]; j++){
+            if(chk1[j] == 0) cnt++;
+        }
+        ans += cnt * nPr(n - i, k - i);
+        ans %= mod;
+    }
+    cout << ans % mod << '\n';
+    //다음 순열 구하기
+    if(n == k){
+        ll x;
+        for(ll i = k; i > 1; i--){
+            if(arr[i] > arr[i-1]){
+                x = i-1;
+                break;
+            }
+        }
+        arr[x] = arr[x] + 1;
+        for(ll i = 1; i <= x; i++){
+            cout << arr[i] << ' ';
+            chk2[arr[i]] = 1;
+        }
+        for(ll i = 1; i <= n; i++){
+            if(chk2[i] == 0) cout << i << ' ';
+        }
+    }
+    else{
+        ll flag= 0, x;
+        for(ll i = k; i >= 1; i--){
+            for(ll j = arr[i]; j <= n; j++){
+                if(chk1[j] == 0){
+                    chk1[i] = 0;
+                    arr[i] = j, flag = 1;
+                    chk1[j] = 1;
+                    x = i;
+                    break;
+                }
+            }
+            if(flag == 1) break;
+        }
+        for(ll i = 1; i <= x; i++){
+            cout << arr[i] << ' ';
+            chk3[arr[i]] = 1;
+        }
+        ll curr = k - x;
+        for(ll i = 1; i <= n; i++){
+            if(curr == 0) break;
+            if(chk3[i] == 0){
+                cout << i << ' ';
+                curr--;
+            }
+        }
+    }
+    return 0;
+}
