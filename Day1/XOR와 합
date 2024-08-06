@@ -1,0 +1,22 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+ll n;
+ll arr[200010];
+
+int main(){
+    cin >> n;
+    for(ll i = 1; i <= n; i++) cin >> arr[i];
+    ll cur = arr[1], st = 1, en = 1, ans = 0;
+    while(st <= en && en <= n){
+        ans += en - st + 1;
+        en++;
+        while(cur & arr[en]){
+            cur ^= arr[st++];
+        }
+        cur |= arr[en];
+    }
+    cout << ans;
+    return 0;
+}
