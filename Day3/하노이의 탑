@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void hanoi(int n, int from, int by, int to)
+{
+    if(n == 1) cout << from << ' ' << to << '\n';
+    else
+    {
+        hanoi(n - 1, from, to, by);
+        cout << from << ' ' << to << '\n';
+        hanoi(n - 1, by, from, to);
+    }
+}
+
+string toString(__uint128_t num) {
+    std::string str;
+    do {
+        int digit = num % 10;
+        str = std::to_string(digit) + str;
+        num = (num - digit) / 10;
+    } while (num != 0);
+    return str;
+}
+
+int main()
+{
+    ios_base :: sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    int n;
+    cin >> n;
+    if(n > 20) 
+    {
+    	__uint128_t k;
+    	k = pow(2, n);
+    	string s = toString(k - 1);
+    	cout << s;
+        return 0;
+    }
+    //cout << (long long)pow(2, n) - 1 << '\n';
+    hanoi(n, 1, 2, 3);
+}
