@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+stack <char> st;
+string s;
+
+int main(){
+    cin >> s;
+    for(ll i = 0; i < s.size(); i++){
+        if(!st.empty() && s[i] == ')' && st.top() == '(')
+            st.pop();
+        else if(!st.empty() && s[i] == ']' && st.top() == '[')
+            st.pop();
+        else st.push(s[i]);
+        while(!st.empty()){
+            if(st.top() == '(' || st.top() == '[') break;
+            else{
+                char k = st.top();
+                st.pop();
+                if(!st.empty() && k == ')' && st.top() == '(') st.pop();
+                else if(!st.empty() && k == ']' && st.top() == '[') st.pop();
+                else{
+                    st.push(k);
+                    break;
+                }
+            }
+        }
+    }
+    if(st.empty()) cout << "YES";
+    else cout << "NO";
+    return 0;
+}
