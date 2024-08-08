@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+#define fastio ios_base::sync_with_stdio(0)
+typedef long long ll;
+using namespace std;
+
+ll n, d = 8*1e18+1;
+vector <pair <ll, ll> > v;
+
+bool com(pair <ll, ll> a, pair <ll, ll> b){
+    return a.first < b.first;
+}
+
+bool com2(pair <ll, ll> a, pair <ll, ll> b){
+    return a.second < b.second;
+}
+
+ll dist(pair <ll, ll> a, pair <ll, ll> b){
+    return (a.first - b.first) * (a.first - b.first) + (a.second - b.second) * (a.second - b.second);
+}
+
+ll dnc(ll st, ll en){ //divide and conquer
+    if(st == en) return 8*1e18 + 1;
+    if(en - st == 1){
+        return dist(v[st], v[en]);
+    }
+    ll mid = (st + en) / 2;
+    d  = min(dnc(st, mid), dnc(mid+1, en));
+    vector <pair <ll, ll> > vv;
+    for(ll i = st; i <= en; i++){
+        if((v[mid].first - v[i].first) * (v[mid].first - v[i].first) < d)
+            vv.push_back(v[i]);
+    }
+    sort(vv.begin(), vv.end(), com2); // y기준 sort
+    for(ll i = 0; i < vv.size(); i++){
+        for(ll j = i + 1; j < vv.size(); j++){
+            if((vv[i].second - vv[j].second) * (vv[i].second - vv[j].second) < d){
+                d = min(d, dist(vv[i], vv[j]));
+            }
+            else break;
+        }
+    }
+    return d;
+}
+
+int main()
+{
+    fastio;
+    cin.tie(0); cout.tie(0);
+    cin >> n;
+    for(ll i = 0; i < n; i++){
+        ll x, y; cin >> x >> y;
+        v.push_back({x, y});
+    }
+    sort(v.begin(), v.end(), com);
+    cout << dnc(0, n - 1);
+    return 0;
+}
