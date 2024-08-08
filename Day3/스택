@@ -1,0 +1,35 @@
+#include "nostl.h"
+#include <cstdio>
+
+int n, cursiz = 0;
+int stak[300010];
+
+int main() {
+    scanf("%d", &n);
+    while(n--){
+        char s[5];
+        scanf("%s", s);
+        if(s[0] == 'P' && s[1] =='U'){
+            int a; scanf("%d", &a);
+            stak[cursiz] = a;
+            cursiz++;
+        }
+        else if(s[0] == 'T'){
+            if(cursiz == 0) printf("-1\n");
+            else printf("%d\n", stak[cursiz - 1]);
+        }
+        else{
+            if(cursiz == 0) printf("-1\n");
+            else{
+                printf("%d\n", stak[cursiz - 1]);
+                stak[cursiz - 1] = 0;
+                cursiz--;
+            }
+        }
+    }
+    printf("%d\n", cursiz);
+    for(int i = 0; i < cursiz; i++){
+        printf("%d ", stak[i]);
+    }
+    return 0;
+}
