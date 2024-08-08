@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+#define fastio ios_base::sync_with_stdio(0)
+typedef long long ll;
+using namespace std;
+
+ll a, b, c;
+
+ll dncmul(ll x, ll y){
+    if(y == 0) return 0;
+    ll k = dncmul(x, y / 2);
+    k = (k * 2) % c;
+    if(y % 2 == 1) k += x, k %= c;
+    return k % c;
+}
+
+ll dncpow(ll x, ll y){
+    if(y == 0) return 1 % c;
+    ll k = dncpow(x, y / 2);
+    k = (dncmul(k, k)) % c;
+    if(y % 2 == 1) k = (dncmul(k, x)) % c;
+    return k % c;
+}
+
+int main()
+{
+    fastio;
+    cin.tie(0); cout.tie(0);
+    cin >> a >> b >> c;
+    cout << dncpow(a, b);
+    return 0;
+}
