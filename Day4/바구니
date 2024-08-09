@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+ll q;
+map<ll, ll> mp;
+
+int main(){
+    ios_base :: sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    cin >> q;
+    while(q--){
+        ll a, b;
+        cin >> a >> b;
+        if(a == 1) {
+            mp[b]++;
+        }
+        else if(a == 2) {
+            if(mp[b] > 0) {
+                mp[b]--;
+                if(mp[b] == 0) {
+                    mp.erase(b);
+                }
+            }
+        }
+        else {
+            cout << mp[b] << '\n';
+        }
+    }
+    return 0;
+}
