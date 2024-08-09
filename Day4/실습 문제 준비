@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+ll n, m, cnt;
+map<ll, ll> mp;
+
+int main(){
+    ios_base :: sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    cin >> n >> m;
+    for(ll i = 1; i <= n; i++) mp.insert({100001 - i, i});
+    while(m--){
+        ll z; cin >> z;
+        if(mp.lower_bound(100001-z) == mp.end()){
+            cout << cnt;
+            break;
+        }
+        mp.erase(mp.lower_bound(100001 - z));
+        cnt++;
+        if(cnt >= n){
+            cout << n;
+            break;
+        }
+    }
+    return 0;
+}
