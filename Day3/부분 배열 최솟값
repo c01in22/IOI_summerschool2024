@@ -1,0 +1,15 @@
+//deque trick
+#include "subarraymin.h"
+#include <deque>
+using namespace std;
+
+void subarray_min(int n, int k) {
+    std::deque <int> de;
+    for(int i = 1; i <= n; i++){
+        while(!de.empty() && i - k >= de.front()) de.pop_front();
+        while(!de.empty() && compare(i, de.back())) de.pop_back();
+        de.push_back(i);
+        if(i >= k) answer(i - k + 1, de.front());
+    }
+    return;
+}
