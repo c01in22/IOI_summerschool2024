@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+
+ll dp[4001][4001];
+
+int main()
+{
+    string s1, s2;
+    cin >> s1 >> s2;
+    for(ll i = 1; i <= s1.size(); i++)
+    {
+        for(ll j = 1; j <= s2.size(); j++)
+        {
+            if(s1[i - 1] == s2[j - 1]) dp[i][j] = dp[i - 1][j - 1] + 1;
+            else dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+        }
+    }
+    cout << dp[s1.size()][s2.size()] << '\n';
+    deque <char> de;
+    ll cur = dp[s1.size()][s2.size()];
+    for(ll i = s1.size(); i >= 1; i--)
+    {
+        for(ll j = 1; j <= s2.size(); j++)
+        {
+            if(dp[i][j] == cur && s1[i - 1] == s2[j - 1])
+            {
+                de.push_front(s1[i - 1]);
+                cur--;
+                break;
+            }
+        }
+        if(cur == 0) break;
+    }
+    while(!de.empty())
+    {
+        char k = de.front();
+        de.pop_front();
+        cout << k;
+    }
+    return 0;
+}
