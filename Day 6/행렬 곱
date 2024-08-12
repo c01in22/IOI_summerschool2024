@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+#define fastio ios_base::sync_with_stdio(0)
+typedef long long ll;
+using namespace std;
+
+ll n;
+vector <pair <ll, ll> > v;
+ll dp[510][510], r[510];
+
+int main(){
+    cin >> n;
+    for(ll i = 0; i < n + 1; i++){
+        cin >> r[i];
+    }
+    for(ll i = 1; i < n + 1; i++){
+        v.push_back({r[i-1], r[i]});
+    }
+
+    for(ll j = 0; j < n; j++){
+        for(ll i = j - 1; i >= 0; i--){
+            ll mi = 1e18, miind;
+            for(ll k = j; k > i; k--){
+                if(mi > dp[i][k - 1] + dp[k][j] + v[i].first * v[k - 1].second * v[j].second){
+                    mi = dp[i][k - 1] + dp[k][j] + v[i].first * v[k - 1].second * v[j].second;
+                    miind = k;
+                }
+            }
+            dp[i][j] = mi;
+        }
+    }
+    cout << dp[0][n - 1];
+    return 0;
+}
