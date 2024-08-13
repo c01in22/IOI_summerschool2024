@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+ll n, m, t, mi = 1e18, ans = 1e18, st;
+vector <ll> adj[600];
+queue <ll> qu;
+ll dist[600], par[600];
+
+void reset(){
+    for(ll i = 0; i < 510; i++) dist[i] = 1e18;
+}
+
+void dfs(ll i){
+    qu.push(i);
+    while(!qu.empty()){
+        ll nxt = qu.front(); qu.pop();
+        for(auto k : adj[nxt]){
+            if(dist[k] == 1e18){
+                dist[k] = dist[nxt] + 1;
+                par[k] = nxt;
+                qu.push(k);
+            }
+            else if(par[nxt] != k && par[k] != nxt){
+                mi = min(mi, dist[nxt] + dist[k] + 1);
+            }
+        }
+    }
+}
+
+int main()
+{
+    cin >> n >> m;
+    for(ll i = 0; i < m; i++){
+        ll x, y; cin >> x >> y;
+        adj[x].push_back(y);
+        adj[y].push_back(x);
+    }
+    for(ll i = 1; i <= n; i++){
+        mi = 1e18;
+        reset();
+        st = i;
+        dist[i] = 0;
+        dfs(i);
+        ans = min(ans, mi);
+    }
+    cout << ans;
+    return 0;
+}
