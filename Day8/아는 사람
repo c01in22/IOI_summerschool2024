@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+
+ll N, Q;
+ll par[100010], ran[100010];
+
+void init(){
+    for(ll i = 0; i < 100010; i++) par[i] = i, ran[i] = 1;
+}
+
+ll fin(ll u){
+    if(par[u] == u) return u;
+    return par[u] = fin(par[u]);
+}
+
+void merg(ll u, ll v){
+    u = fin(u), v = fin(v);
+    if(u == v) return;
+    if(ran[u] > ran[v]) swap(u, v);
+    par[u] = v;
+    if(ran[u] == ran[v]) ran[v]++;
+}
+
+int main(){
+    cin >> N >> Q;
+    init();
+    for(ll x = 0; x < Q; x++){
+        ll a, i, j;
+        cin >> a >> i >> j;
+        if(a == 0){
+            merg(i, j);
+        }
+        else{
+            //cout << fin(i) <<' ' << fin(j) <<'\n';
+            if(fin(i) == fin(j)) cout << 1 << '\n';
+            else cout << 0 << '\n';
+        }
+    }
+}
