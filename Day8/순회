@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+
+ll N;
+
+typedef struct Node{
+    ll data = 0;
+    ll par = 0;
+    ll le = 0, ri = 0;
+};
+Node bintree[500010];
+
+void preorder(Node ptr){
+    cout << ptr.data << ' ';
+    if(ptr.le != 0) preorder(bintree[ptr.le]);
+    if(ptr.ri != 0) preorder(bintree[ptr.ri]);
+}
+
+void inorder(Node ptr){
+    if(ptr.le != 0) inorder(bintree[ptr.le]);
+    cout << ptr.data << ' ';
+    if(ptr.ri != 0) inorder(bintree[ptr.ri]);
+}
+
+void postorder(Node ptr){
+    if(ptr.le != 0) postorder(bintree[ptr.le]);
+    if(ptr.ri != 0) postorder(bintree[ptr.ri]);
+    cout << ptr.data << ' ';
+}
+
+int main(){
+    cin >> N;
+    for(ll i = 1; i <= N; i++){
+        ll L, R; cin >> L >> R;
+        bintree[i].data = i;
+        if(L != 0) bintree[i].le = L, bintree[L].par = i;
+        if(R != 0) bintree[i].ri = R, bintree[R].par = i;
+    }
+    ll root;
+    for(ll i = 1; i <= N; i++){
+        if((bintree[i].le != 0 || bintree[i].ri != 0) && bintree[i].par == 0)
+            root = i;
+    }
+    preorder(bintree[root]);
+    cout << '\n';
+    inorder(bintree[root]);
+    cout << '\n';
+    postorder(bintree[root]);
+}
