@@ -1,0 +1,68 @@
+#include <bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+
+ll N, k, p, node;
+ll ans[200010], chk[200010];
+
+const ll MAX = 1000000;
+ll n = 0;
+ll heap[MAX];
+
+void upheap(ll id){
+    while(id > 1){
+        if(heap[id/2] <= heap[id]) break;
+        swap(heap[id], heap[id/2]);
+        id /= 2;
+    }
+}
+
+void insert_heap(ll value){
+    heap[++n] = value;
+    upheap(n);
+}
+
+void dfs(ll u){
+    if(u > N || node >= N) return;
+    if(ans[u]){
+        dfs(u * 2);
+        dfs(u * 2 + 1);
+    }
+    else{
+        while(chk[node] == 1) node++;
+        ans[u] = node, chk[node] = 1;
+        dfs(u * 2);
+        dfs(u * 2 + 1);
+    }
+}
+
+int main(){
+    cin >> N >> k >> p;
+    ll tempk = 1, tempp = p / 2;
+    chk[k] = 1, ans[p] = k;
+    while(tempp != 0 && tempk != k){
+        chk[tempk] = 1;
+        ans[tempp] = tempk++;
+        tempp /= 2;
+    }
+    // k 밑의 정점들을 dfs로 탐색하며 k보다 큰 수들 차례대로 넣어주기
+    node = k + 1;
+    dfs(p);
+    ll cur = 1;
+    for(ll i = 1; i <= N; i++){
+        if(ans[i] == 0){
+            while(chk[cur] == 1) cur++;
+            ans[i] = cur;
+            cur++;
+        }
+    }
+    // 직접 ans를 힙에 넣어보고 되면 출력, 안되면 -1 출력
+    for(ll i = 1; i <= N; i++){
+        insert_heap(ans[i]);
+    }
+    if(heap[p] != k) cout << -1;
+    else{
+        for(ll i = 1; i <= N; i++) cout << ans[i] << ' ';
+    }
+    return 0;
+}
