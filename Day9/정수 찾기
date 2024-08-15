@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+#define fastio ios_base::sync_with_stdio(0)
+typedef long long ll;
+using namespace std;
+
+ll n;
+vector <pair <ll, pair <ll, ll> > > v;
+
+ll solve(ll k){
+    ll sum = 0;
+    for(ll i = 0; i < v.size(); i++){
+        if(k >= v[i].first){
+            ll x = k - v[i].first;
+            if(x == 0) sum++;
+            else{
+                if(k > v[i].second.first){
+                    sum += (v[i].second.first - v[i].first) /  v[i].second.second + 1;
+                }
+                else sum += x / v[i].second.second + 1;
+            }
+        }
+    }
+    //cout << sum << '\n';
+    return sum % 2;
+}
+
+int main()
+{
+    fastio;
+    cin.tie(0); cout.tie(0);
+    cin >> n;
+    ll summ = 0, maxx = 0;
+    for(ll i = 1; i <= n; i++){
+        ll a, b, c;
+        cin >> a >> c >> b;
+        v.push_back({a, {c, b}});
+        maxx = max(maxx, c);
+    }
+    ll le = 0, ri = maxx + 1, mid;
+    while(le + 1 < ri){
+        mid = (le + ri) / 2;
+        //cout << solve(mid) << ' ' << le << ' ' << mid << ' ' << ri << '\n';
+        if(solve(mid) == 1) ri = mid;
+        else le = mid;
+    }
+    if(solve(mid) == 1) ri = mid;
+    if(solve(le) == 1) ri = le;
+    if(solve(le - 1) == 1) ri = le -  1;
+    //cout << le - 1 << ' ' << solve(le - 1) << ' ';
+    solve(2);
+    ll cnt = 0;
+    for(ll i = 0; i < v.size(); i++){
+        if(v[i].first <= ri && ri <= v[i].second.first
+           && (ri - v[i].first) % v[i].second.second == 0) cnt++;
+    }
+    if(cnt % 2 != 1) cout << "NOTHING";
+    else cout << ri << ' ' << cnt;
+    return 0;
+}
